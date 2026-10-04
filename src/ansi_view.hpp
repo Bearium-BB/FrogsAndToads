@@ -16,7 +16,7 @@ namespace FrogToad {
 
         /**
         * @brief Draw the current board state to the terminal.
-        * @param m Immutable board model to render.
+        * @param m Read-only reference to the current model to render.
         */
 	    void draw(const BoardModel& m) override;
 

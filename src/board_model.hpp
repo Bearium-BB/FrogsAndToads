@@ -29,15 +29,17 @@ namespace FrogToad {
         /**
          * @brief Convert a cell to a character representation.
          * @param c Cell value.
-         * @return '.' for Empty, 'F' for Frog, 'T' for Toad.
+         * @return '.' for Empty, 'F' for Frog, 'T' for Toad; 'X' for an invalid value.
          */
         static char toChar(Cell c);
 
         /**
          * @brief Attempt to move the piece at index i.
          *
-         * Applies a slide or jump is a space is available (direction depends
-         * on the piece type). Updates internal state on success.
+         * Applies a slide or jump if a space is available in the piece's
+         * direction. A jump requires an occupied intervening cell, of either
+         * species. Updates internal state on success; leaves it unchanged
+         * for an invalid index, an empty cell, or a blocked move.
          *
          * @param i Zero-based index of the piece to move.
          * @return True if a move was applied; otherwise false.
@@ -63,13 +65,13 @@ namespace FrogToad {
         /**
          * @brief Bounds check for board indices.
          * @param i Index to test.
-         * @return @c true if @p k is within [0, BoardSize).
+         * @return @c true if @p i is within [0, BoardSize).
          */
         static constexpr bool isIndexValid(int i);
 
         /**
          * @brief Direction of motion for a piece.
-         * @param c Cell value.
+         * @param c Occupied cell value (Frog or Toad).
          * @return +1 (right) for Frog, -1 (left) for Toad.
          */
         static constexpr int moveDirection(Cell c);
@@ -81,7 +83,7 @@ namespace FrogToad {
          * @param i Index to test (assumed valid).
          * @return True if the cell is Cell::Empty, else false.
          */
-        bool isCellEmpty(int k) const;
+        bool isCellEmpty(int i) const;
 
         /** @brief Recompute isGameSolved based on the current board. */
         void evaluateBoard(); 

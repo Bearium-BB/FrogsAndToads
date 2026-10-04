@@ -9,7 +9,7 @@ namespace FrogToad {
     public:
         /**
          * @brief Render the current board to stdout.
-         * @param m Immutable board model to display.
+         * @param m Read-only reference to the current model to display.
          */
         void draw(const BoardModel& m) override;
     };

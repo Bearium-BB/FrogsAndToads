@@ -6,7 +6,7 @@ namespace FrogToad {
      * @brief Abstract view interface for rendering our game.
      *
      * Views must implement a single draw operation that receives a read-only
-     * snapshot of the current board state to render.
+     * reference to the current model.
      */
     class IView {
     public:
@@ -25,18 +25,18 @@ namespace FrogToad {
     /**
      * @brief Abstract controller interface plus a model helper.
      *
-     * Controllers encapsulate player or AI input and advance the model by
-     * issuing moves. 
+     * Controllers handle player or AI input and translate it into model
+     * requests. 
      */
     class IController {
     public:
         virtual ~IController() = default;
 
         /**
-         * @brief Advance the game by producing the next move.
+         * @brief Handle input for the current model.
          *
-         * Implementations should read input (human or AI) and apply it to the
-         * model—usually by delegating to applyCommand.
+         * Depending on the controller, a call may apply a move, reset the
+         * model, ignore input, or find no input. The model can reject a move.
          */
         virtual void nextMove(BoardModel&) = 0;
 
@@ -44,7 +44,7 @@ namespace FrogToad {
          * @brief Translate an ASCII key code into a model command.
          *
          * @param m Reference to the model.
-         * @param key Input key code: a board-position digit or 'r'/'R'.
+         * @param key Integer key code; accepts a board-position digit or 'r'/'R'.
          * @return True if a move was applied or a reset was performed; otherwise false.
          *
          * @details
@@ -54,6 +54,7 @@ namespace FrogToad {
          *   and passed to BoardModel::tryMove().
          * - Invalid input and recognized but illegal moves return false.
          *   This result is not a quit/continue status.
+         * - Single-character commands support at most nine board cells.
          *
          * @note The digit-to-index conversion relies on ASCII ordering:
          *       '1' - '1' = 0, '2' - '1' = 1, '3' - '1' = 2, etc.
