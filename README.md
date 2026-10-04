@@ -1,181 +1,39 @@
-# Raylib-Quickstart
-## Frogs and Toads: graphical resource lifetime
+# Frogs and Toads
 
-`RaylibView::windowW()` and `RaylibView::windowH()` are static presentation
-settings, so `main()` can obtain the dimensions before constructing a view.
-The graphical path initializes the window, constructs the view in an inner
-scope, runs the frame loop, destroys the view, and then calls `CloseWindow()`.
-
-For the image-based view in Part 2, let `RaylibView` own its textures: load them
-once in its constructor and unload them in its destructor. Do not load textures
-in `draw()`. The supplied view remains a blank-window stub.
-
-For Part 1, keep the inner scope and temporarily replace its view with
-`AnsiView`; use temporary dimensions in `InitWindow()` as instructed. No texture
-initialization or cleanup calls are needed for the ANSI view. Restore the
-graphical view and its static dimension calls for Part 2.
-
-For Part 3, a keyboard quit request should break the frame loop and let execution
-leave the view's scope before `CloseWindow()`, just like ordinary window closure.
-Do not return from inside that scope or call `exit()` to handle quitting.
-
-A simple cross platform template for setting up a project with the bleeding edge raylib code.
-Works with C or C++.
-
-# Basic Setup
-Download this repository to get started.
-
-You can download the zip file of the repository from the Green Code button on github. This is the simplest way to get the template to start from.
-Once you have downloaded the template, rename it to your project name.
-
-or
-
-Clone the repository with git, from the url
 ```
-https://github.com/raylib-extras/raylib-quickstart.git
+              _              _
+  __   ___.--'_`.          .'_`--.___   __
+ ( _`.'. -   'o` )        ( 'o`   - .`.'_ )
+ _\.'_'      _.-'          `-._      `_`./_
+( \`. )    //\`              '/\\    ( .'/ )
+ \_`-'`---'\\__,            ,__//`---'`-'_/
+  \`        `-\              /-'        '/
+   `                                    '
 ```
 
-If you are using a command line git client you can use the command below to download and rename the template in one step
-```
-git clone https://github.com/raylib-extras/raylib-quickstart.git [name-for-your-project-here]
-```
+[ascii art credit](https://www.ludd.ltu.se/~vk/pics/ascii/ascii3.shtml)
 
-# Naming projects
-* Replace the placeholder with your desired project name when running the git clone command above.
-* __Do not name your game project 'raylib', it will conflict with the raylib library.__
-* If you have used custom game name with __git clone__, there is no need to rename it again.
+## Game Rules
 
+The game is played on a linear board with N squares. In the variant we will be working with, N is equal to 7. All but the center square are filled with Frogs (F) to the left and Toads (T) to the right. The goal of the game is to get all the frogs and toads to switch places.
 
-## Supported Platforms
-Quickstart supports the main 3 desktop platforms:
-* Windows
-* Linux
-* MacOS
+The game is played by moving the frogs and toads, one at a time, into an empty square either by sliding into an adjacent square, or by hopping over a single occupied square into an empty one. Frogs can only move to the right. Toads can only move to the left.
 
-# VSCode Users (all platforms)
-*Note* You must have a compiler toolchain installed in addition to vscode.
+Here’s an example of two initial moves in a game that begins in this state:  
+`F	F	F	. T	T	T`
 
-1. Download the quickstart
-2. Rename the folder to your game name
-3. Open the folder in VSCode
-4. Run the build task ( CTRL+SHIFT+B or F5 )
-5. You are good to go
+Move 1: The first toad slides into the empty square in the middle:  
+`F	F	F	T	.	T	T`
 
-# Windows Users
-There are two compiler toolchains available for windows, MinGW-W64 (a free compiler using GCC), and Microsoft Visual Studio
-## Using MinGW-W64
-* Rename the folder to your game name
-* Double click the `build-MinGW-W64.bat` file
-* CD into the folder in your terminal
-  * if you are using the W64devkit and have not added it to your system path environment variable, you must use the W64devkit.exe terminal, not CMD.exe
-  * If you want to use cmd.exe or any other terminal, please make sure that gcc/mingw-W64 is in your path environment variable.
-* run `make`
-* You are good to go
+Move 2: The first frog jumps over the first toad:  
+`F	F	. T	F	T	T`
 
-### Note on MinGW-64 versions
-Make sure you have a modern version of MinGW-W64 (not mingw).
-The best place to get it is from the W64devkit from
-https://github.com/skeeto/w64devkit/releases
+Play continues in this manner until all the toads are on the left and all frogs on the right. The player does _not_ need to alternate between Frogs and Toads.
 
-or the version installed with the raylib installer
+The winning state of the board looks like this:  
+`T	T	T	. F	F	F`
 
-#### If you have installed raylib from the installer
-Make sure you have added the path
+If, before arriving at the winning state, no further moves are possible, the player loses.
 
-`C:\raylib\w64devkit\bin`
-
-To your path environment variable so that the compiler that came with raylib can be found.
-
-DO NOT INSTALL ANOTHER MinGW-W64 from another source such as msys2, you don't need it.
-
-## Microsoft Visual Studio 2026
-* Rename the folder to your game name
-* Run `build-VisualStudio2026.bat`
-* double click the `.slnx` file that is generated
-* develop your game
-* you are good to go
-
-# Linux Users
-* Rename the folder to your game name
-* CD into the build folder
-* run `./premake5 gmake`
-* CD back to the root
-* run `make`
-* you are good to go
-
-# MacOS Users
-* Rename the folder to your game name
-* CD into the build folder
-* run `./premake5.osx gmake`
-* CD back to the root
-* run `make`
-* you are good to go
-
-# Output files
-The built code will be in the bin dir
-
-# Working directories and the resources folder
-The example uses a utility function from `path_utils.h` that will find the resources dir and set it as the current working directory. This is very useful when starting out. If you wish to manage your own working directory you can simply remove the call to the function and the header.
-
-# Changing to C++
-Simply rename `src/main.c` to `src/main.cpp` and re-run the steps above and do a clean build.
-
-# Using your own code
-Simply remove `src/main.c` and replace it with your code, and re-run the steps above and do a clean build.
-
-# Building for other OpenGL targets
-If you need to build for a different OpenGL version than the default (OpenGL 3.3) you can specify an OpenGL version in your premake command line. Just modify the bat file or add the following to your command line
-
-## For OpenGL 1.1
-`--graphics=opengl11`
-
-## For OpenGL 2.1
-`--graphics=opengl21`
-
-## For OpenGL 4.3
-`--graphics=opengl43`
-
-## For OpenGLES 2.0
-`--graphics=opengles2`
-
-## For OpenGLES 3.0
-`--graphics=opengles3`
-
-## For Software Rendering
-`--graphics=software`
-
-*Note*
-Sofware rendering does not work with glfw, use Win32 or SDL platforms
-`--backend=win32`
-
-# Adding External Libraries 
-
-Quickstart is intentionally minimal — it only includes what is required to compile and run a basic raylib project.  
-If you want to use extra libraries, you can add them to the `build/premake5.lua` file yourself using the links function.
-
-You can find the documentation for the links function here https://premake.github.io/docs/links/
-
-### Example: adding the required libraries for tinyfiledialogs on Windows
-tinyfiledialogs requires extra Windows system libraries.
-The premake file uses filters to define options that are platform specific
-https://premake.github.io/docs/Filters/
-
-Using the windows filter adds these libraries only to the windows build.
-```
-filter "system:windows"
-    links {
-        "Comdlg32",
-        "User32",
-        "Ole32",
-        "Shell32"
-    }
-```
-
-### Cross-platform reminder
-If you add a library, make sure to add its required dependencies for all platforms you plan to support (Windows, Linux, MacOS).
-Different libraries will have different dependencies on different platforms.
-
-
-# License
-Raylib-Quickstart by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit https://creativecommons.org/publicdomain/zero/1.0/
-
+An example of a losing state:  
+`.	F	F	T	F	T	T`
