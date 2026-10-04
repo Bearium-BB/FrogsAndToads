@@ -45,7 +45,7 @@ namespace FrogToad {
          * @brief Attempt to move the piece at index i.
          *
          * Applies a slide or jump if a space is available in the piece's
-         * direction. A jump requires an occupied intervening cell, of either
+         * direction. A jump requires an intervening piece of the opposite
          * species. Updates internal state on success; leaves it unchanged
          * for an invalid index, an empty cell, or a blocked move.
          *

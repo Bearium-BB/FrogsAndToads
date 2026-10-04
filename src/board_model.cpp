@@ -65,15 +65,25 @@ namespace FrogToad {
         if (!isIndexValid(i) || isCellEmpty(i)) return -1;
 
         const int direction{ moveDirection(board[i]) };
-        const int slideMove{ i + direction };
-        const int jumpMove{ i + 2 * direction };
+        const int adjacentIndex{ i + direction };
 
-        if (isIndexValid(slideMove) && isCellEmpty(slideMove)) {
-            return slideMove;
+        if (!isIndexValid(adjacentIndex)) return -1;
+        if (isCellEmpty(adjacentIndex)) {
+            // Slide into the adjacent empty cell.
+            return adjacentIndex;
         }
-        if (isIndexValid(slideMove) && !isCellEmpty(slideMove) && isIndexValid(jumpMove) && isCellEmpty(jumpMove)) {
-            return jumpMove;
+
+        // Slide is not possible, so check for a jump. 
+        // The adjacent cell must contain the opposite type of piece.
+        if (board[adjacentIndex] == board[i]) return -1;
+
+        const int jumpIndex{ adjacentIndex + direction };
+        if (isIndexValid(jumpIndex) && isCellEmpty(jumpIndex)) {
+            // Jump over the adjacent piece into the empty cell.
+            return jumpIndex;
         }
+
+        // No legal move is possible.
         return -1;
     }
 
