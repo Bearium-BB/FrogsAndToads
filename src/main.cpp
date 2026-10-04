@@ -1,58 +1,49 @@
-#include <array>
-#include <string>
 #include "board_model.hpp"
+#include "ansi_view.hpp"
+#include "console_controller.hpp"
+#include "raylib_controller.hpp"
+#include "raylib_view.hpp"
+#include "raylib.h"
 
-// #define RAYLIB_BUILD 
+namespace FrogToad {
+    int runConsole() {
+        BoardModel model;
+        AnsiView view;
+        ConsoleController controller;
 
-#ifdef RAYLIB_BUILD
-	#include "raylib.h"
-    #include "raylib_controller.hpp"
-	#include "raylib_view.hpp"
-#else
-	#include <iostream>
-	#include "console_controller.hpp"
-	#include "console_view.hpp"
-	#include "ansi_view.hpp"
-#endif
+        while (true) {
+            view.draw(model);
+            controller.nextMove(model);
+        }
 
-#ifndef RAYLIB_BUILD
-int main() {
-    FrogToad::BoardModel model;
-    FrogToad::AnsiView view;
-    FrogToad::ConsoleController controller;
-
-    std::cout << "Toads & Frogs - Console\n\n";
-
-    while (true) {
-        view.draw(model);
-        controller.nextMove(model);
-        std::cout << "\n";
+        return 0;
     }
 
-    return 0;
+    int runRaylib() {
+        BoardModel model;
+        RaylibController controller;
+
+        InitWindow(RaylibView::windowW(), RaylibView::windowH(), "Toads & Frogs - Raylib");
+        SetTargetFPS(60);
+
+        {
+            // The view's textures must live entirely within the window's lifetime.
+            RaylibView view;
+
+            while (!WindowShouldClose()) {
+                controller.nextMove(model);
+
+                BeginDrawing();
+                view.draw(model);
+                EndDrawing();
+            }
+        } // Destroy the view (and unload its textures) before closing the window.
+
+        CloseWindow();
+        return 0;
+    }
 }
-#else
+
 int main() {
-    FrogToad::BoardModel model;
-    FrogToad::RaylibController ctrl;
-
-    InitWindow(FrogToad::RaylibView::windowW(), FrogToad::RaylibView::windowH(), "Toads & Frogs - Raylib");
-    SetTargetFPS(60);
-
-    {
-        // The view's textures must live entirely within the window's lifetime.
-        FrogToad::RaylibView view;
-
-        while (!WindowShouldClose()) {
-            ctrl.nextMove(model);
-
-            BeginDrawing();
-            view.draw(model);
-            EndDrawing();
-        }
-    } // Destroy the view (and unload its textures) before closing the window.
-
-    CloseWindow();
-    return 0;
+    return FrogToad::runConsole(); // Change to runRaylib() for Parts 1–4.
 }
-#endif
