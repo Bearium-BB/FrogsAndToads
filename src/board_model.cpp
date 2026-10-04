@@ -5,11 +5,22 @@ namespace FrogToad {
 
     void BoardModel::reset() {
         board = StartingBoard;
-        isGameSolved = false;
     }
 
     bool BoardModel::isSolved() const { 
-        return isGameSolved; 
+        return board == GoalBoard;
+    }
+
+    BoardModel::GameState BoardModel::state() const {
+        if (isSolved()) return GameState::Solved;
+
+        // TODO (student): Use canMove() to detect when no legal moves remain.
+        // Check for a solution first: the solved board also has no legal moves.
+        return GameState::Playing;
+    }
+
+    bool BoardModel::canMove(int i) const {
+        return moveDestination(i) != -1;
     }
 
     BoardModel::Cell BoardModel::cellAt(int i) const {
@@ -26,24 +37,11 @@ namespace FrogToad {
     }
 
     bool BoardModel::tryMove(int i) {
-        if (!isIndexValid(i) || isCellEmpty(i)) return false;
+        const int destination{ moveDestination(i) };
+        if (destination == -1) return false;
 
-        Cell c{ board[i] };
-        int slideMove{ i + moveDirection(c) };
-        int jumpMove{ i + 2 * moveDirection(c) };
-
-        if (isIndexValid(slideMove) && !isCellEmpty(slideMove) && isIndexValid(jumpMove) && isCellEmpty(jumpMove)) {
-            board[jumpMove] = c;
-        }
-        else if (isIndexValid(slideMove) && isCellEmpty(slideMove)) {
-            board[slideMove] = c;
-        }
-        else {
-            return false;
-        }
-
+        board[destination] = board[i];
         board[i] = Cell::Empty;
-        evaluateBoard();
         return true;
     }
 
@@ -63,8 +61,20 @@ namespace FrogToad {
         return board[i] == Cell::Empty;
     }
 
-    void BoardModel::evaluateBoard() {
-        isGameSolved = (board == GoalBoard);
+    int BoardModel::moveDestination(int i) const {
+        if (!isIndexValid(i) || isCellEmpty(i)) return -1;
+
+        const int direction{ moveDirection(board[i]) };
+        const int slideMove{ i + direction };
+        const int jumpMove{ i + 2 * direction };
+
+        if (isIndexValid(slideMove) && isCellEmpty(slideMove)) {
+            return slideMove;
+        }
+        if (isIndexValid(slideMove) && !isCellEmpty(slideMove) && isIndexValid(jumpMove) && isCellEmpty(jumpMove)) {
+            return jumpMove;
+        }
+        return -1;
     }
 
 } // namespace FrogToad

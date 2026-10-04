@@ -11,6 +11,8 @@ namespace FrogToad {
 
         enum class Cell { Empty, Frog, Toad }; // Empty, Frog moves right, Toad moves left
 
+        enum class GameState { Playing, Solved, Lost };
+
         // --- Public API ---
 
         /** @brief Reset to the starting configuration. */
@@ -18,6 +20,12 @@ namespace FrogToad {
 
         /** @brief Has the game been solved?  */
         bool isSolved() const;
+
+        /** @brief Derived game state; unsolved boards report Playing until loss detection is implemented. */
+        GameState state() const;
+
+        /** @brief Can the piece at zero-based index i move? Returns false for invalid indices and empty cells. */
+        bool canMove(int i) const;
 
         /**
          * @brief Cell at index i.
@@ -55,9 +63,6 @@ namespace FrogToad {
 
         // Object State
         
-        /** @brief Cached game-solved flag. */
-        bool isGameSolved{ false };
-
         /** @brief The actual game board. */
         std::array<Cell, BoardSize> board{ StartingBoard };
 
@@ -85,7 +90,7 @@ namespace FrogToad {
          */
         bool isCellEmpty(int i) const;
 
-        /** @brief Recompute isGameSolved based on the current board. */
-        void evaluateBoard(); 
+        /** @brief Legal destination for the piece at index i, or -1 if no move is possible. */
+        int moveDestination(int i) const;
     };
 }
