@@ -34,19 +34,23 @@ int main() {
 #else
 int main() {
     FrogToad::BoardModel model;
-    FrogToad::RaylibView view;
     FrogToad::RaylibController ctrl;
 
-    InitWindow(view.windowW(), view.windowH(), "Toads & Frogs - Raylib");
+    InitWindow(FrogToad::RaylibView::windowW(), FrogToad::RaylibView::windowH(), "Toads & Frogs - Raylib");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        ctrl.nextMove(model);
+    {
+        // The view's textures must live entirely within the window's lifetime.
+        FrogToad::RaylibView view;
 
-        BeginDrawing();
-        view.draw(model);
-        EndDrawing();
-    }
+        while (!WindowShouldClose()) {
+            ctrl.nextMove(model);
+
+            BeginDrawing();
+            view.draw(model);
+            EndDrawing();
+        }
+    } // Destroy the view (and unload its textures) before closing the window.
 
     CloseWindow();
     return 0;

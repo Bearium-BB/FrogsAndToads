@@ -1,4 +1,24 @@
 # Raylib-Quickstart
+## Frogs and Toads: graphical resource lifetime
+
+`RaylibView::windowW()` and `RaylibView::windowH()` are static presentation
+settings, so `main()` can obtain the dimensions before constructing a view.
+The graphical path initializes the window, constructs the view in an inner
+scope, runs the frame loop, destroys the view, and then calls `CloseWindow()`.
+
+For the image-based view in Part 2, let `RaylibView` own its textures: load them
+once in its constructor and unload them in its destructor. Do not load textures
+in `draw()`. The supplied view remains a blank-window stub.
+
+For Part 1, keep the inner scope and temporarily replace its view with
+`AnsiView`; use temporary dimensions in `InitWindow()` as instructed. No texture
+initialization or cleanup calls are needed for the ANSI view. Restore the
+graphical view and its static dimension calls for Part 2.
+
+For Part 3, a keyboard quit request should break the frame loop and let execution
+leave the view's scope before `CloseWindow()`, just like ordinary window closure.
+Do not return from inside that scope or call `exit()` to handle quitting.
+
 A simple cross platform template for setting up a project with the bleeding edge raylib code.
 Works with C or C++.
 

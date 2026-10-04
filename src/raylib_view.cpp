@@ -5,6 +5,6 @@ namespace FrogToad {
 		ClearBackground(RAYWHITE);
 	}
 
-	int RaylibView::windowW() const { return 600; }
-	int RaylibView::windowH() const { return 300; }
+	int RaylibView::windowW() { return 600; }
+	int RaylibView::windowH() { return 300; }
 }
