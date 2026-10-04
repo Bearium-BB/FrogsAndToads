@@ -13,7 +13,7 @@ namespace FrogToad {
 
         while (true) {
             view.draw(model);
-            controller.nextMove(model);
+            controller.handleInput(model);
         }
 
         return 0;
@@ -31,7 +31,7 @@ namespace FrogToad {
             RaylibView view;
 
             while (!WindowShouldClose()) {
-                controller.nextMove(model);
+                controller.handleInput(model);
 
                 BeginDrawing();
                 view.draw(model);

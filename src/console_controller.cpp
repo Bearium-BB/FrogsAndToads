@@ -2,16 +2,30 @@
 #include <conio.h>
 
 namespace FrogToad{
-	void ConsoleController::nextMove(BoardModel& m) {
-		int ch{ _getch() };
+	void ConsoleController::handleInput(BoardModel& model) {
+		static_assert(BoardModel::BoardSize <= 9,
+			"Single-character commands support at most nine board cells.");
+
+		const int key{ _getch() };
 
 		// Arrow and function keys produce two codes: a 0 or 0xE0 prefix, then a scan code.
 		// Read and discard the scan code so it cannot become the next command.
-		if (ch == 0 || ch == 0xE0) {
+		if (key == 0 || key == 0xE0) {
 			_getch();
 			return;
 		}
 
-		applyCommand(m, ch);
+		if (key == 'r' || key == 'R') {
+			model.reset();
+			return;
+		}
+
+		if (key < '1' || key > '9' || key > '0' + BoardModel::BoardSize) {
+			return;
+		}
+
+		// Numbered keys select zero-based cells by subtracting '1'.
+		// In this way, '1' maps to 0, '2' to 1, '3' to 2, etc.
+		model.tryMove(key - '1');
 	}
 }
