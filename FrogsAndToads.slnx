@@ -6,9 +6,9 @@
     <Platform Name="Win32" />
     <Platform Name="x64" />
   </Configurations>
-  <Project Path="raylib.vcxproj" Id="8898EA18-743A-15EF-5DF5-284349369C3F">
-  </Project>
-  <Project Path="raylib-quickstart.vcxproj" Id="E0D8FA17-4CEF-F8AD-9566-84CF01BCC935" DefaultStartup="true">
+  <Project Path="FrogsAndToads.vcxproj" Id="D4DB60B4-409C-DCEA-09D7-2568755621C7" DefaultStartup="true">
     <BuildDependency Project="raylib.vcxproj" />
+  </Project>
+  <Project Path="raylib.vcxproj" Id="8898EA18-743A-15EF-5DF5-284349369C3F">
   </Project>
 </Solution>
