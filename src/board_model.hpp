@@ -35,13 +35,6 @@ namespace FrogToad {
         Cell cellAt(int i) const;
 
         /**
-         * @brief Convert a cell to a character representation.
-         * @param c Cell value.
-         * @return '.' for Empty, 'F' for Frog, 'T' for Toad; 'X' for an invalid value.
-         */
-        static char toChar(Cell c);
-
-        /**
          * @brief Attempt to move the piece at index i.
          *
          * Applies a slide or jump if a space is available in the piece's

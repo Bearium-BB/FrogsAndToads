@@ -27,15 +27,6 @@ namespace FrogToad {
         return isIndexValid(i) ? board[i] : Cell::Empty;
     }
 
-    char BoardModel::toChar(Cell c) {
-        switch (c) {
-            case Cell::Empty: return '.';
-            case Cell::Frog: return 'F';
-            case Cell::Toad: return 'T';
-            default: return 'X'; // Invalid! There are only three states to the enum.
-        }
-    }
-
     bool BoardModel::tryMove(int i) {
         const int destination{ moveDestination(i) };
         if (destination == -1) return false;

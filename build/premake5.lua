@@ -214,7 +214,7 @@ if (downloadRaylib) then
             dependson {"raylib"}
             links {"raylib.lib"}
             characterset ("Unicode")
-            buildoptions { "/Zc:__cplusplus" }
+            buildoptions { "/Zc:__cplusplus", "/utf-8" }
 
         filter "system:windows"
             defines{"_WIN32"}

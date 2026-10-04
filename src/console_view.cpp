@@ -2,9 +2,20 @@
 #include <iostream>
 
 namespace FrogToad {
+	namespace {
+		char cellSymbol(BoardModel::Cell cell) {
+			switch (cell) {
+				case BoardModel::Cell::Frog: return 'F';
+				case BoardModel::Cell::Toad: return 'T';
+				case BoardModel::Cell::Empty: return '.';
+				default: return 'X';
+			}
+		}
+	}
+
 	void ConsoleView::draw(const BoardModel& m) {
 		for (int i{ 0 }; i < m.BoardSize; ++i) {
-			std::cout << BoardModel::toChar(m.cellAt(i));
+			std::cout << cellSymbol(m.cellAt(i));
 		}
 		std::cout << "\n";
 
