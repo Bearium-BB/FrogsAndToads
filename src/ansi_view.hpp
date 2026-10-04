@@ -34,7 +34,6 @@ namespace FrogToad {
         static const std::string red()         { return "\x1b[38;5;196m"; }
         static const std::string blue()        { return "\x1b[38;5;33m"; }
         static const std::string green()       { return "\x1b[38;5;34m"; }
-        static const std::string bell()        { return "\a"; }
     };
 }
 

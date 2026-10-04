@@ -42,7 +42,7 @@ namespace FrogToad {
 
 		// Status line
 		if (m.isSolved()) {
-			std::cout << bell() << green() << "Solved! R to restart.\n";
+			std::cout << green() << "Solved! R to restart.\n";
 		}
 		else {
 			std::cout << grey() << "Choose a piece to move.\n";
