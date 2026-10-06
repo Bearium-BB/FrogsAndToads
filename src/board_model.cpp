@@ -60,7 +60,7 @@ namespace FrogToad {
 
         // Slide is not possible, so check for a hop. 
         // The adjacent cell must contain the opposite type of piece.
-        if (board[adjacentIndex] == board[i]) return -1;
+        if (board[adjacentIndex] == board[index]) return -1;
 
         const int jumpIndex{ adjacentIndex + direction };
         if (isIndexValid(jumpIndex) && isCellEmpty(jumpIndex)) {
