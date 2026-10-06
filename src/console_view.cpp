@@ -13,18 +13,18 @@ namespace FrogToad {
 		}
 	}
 
-	void ConsoleView::draw(const BoardModel& m) {
-		for (int i{ 0 }; i < m.BoardSize; ++i) {
-			std::cout << cellSymbol(m.cellAt(i));
+	void ConsoleView::draw(const BoardModel& model) {
+		for (int index{ 0 }; index < BoardModel::BoardSize; ++index) {
+			std::cout << cellSymbol(model.cellAt(index));
 		}
 		std::cout << "\n";
 
-		for (int i{ 0 }; i < m.BoardSize; ++i) {
-			std::cout << (i + 1);
+		for (int index{ 0 }; index < BoardModel::BoardSize; ++index) {
+			std::cout << (index + 1);
 		}
-		std::cout << "   (1.." << m.BoardSize << " move; R restart)\n";
+		std::cout << "   (1.." << BoardModel::BoardSize << " move; R restart)\n";
 
-		if (m.isSolved()) {
+		if (model.isSolved()) {
 			std::cout << "Solved! Press R to restart.\n";
 		}
 	}

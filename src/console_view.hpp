@@ -2,15 +2,10 @@
 #include "interfaces.hpp"
 
 namespace FrogToad {
-    /**
-     * @brief Plain-text console implementation of FrogToad::IView.
-     */
+    /** @brief Presents the board as plain text using F, T, and . symbols. */
     class ConsoleView : public IView {
     public:
-        /**
-         * @brief Render the current board to stdout.
-         * @param m Read-only reference to the current model to display.
-         */
-        void draw(const BoardModel& m) override;
+        /** @brief Print the board, numbered positions, and solved status. */
+        void draw(const BoardModel& model) override;
     };
 }

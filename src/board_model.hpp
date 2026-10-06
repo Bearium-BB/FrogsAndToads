@@ -2,88 +2,60 @@
 #include <array>
 
 namespace FrogToad {
-    /**
-     * @brief Game model holding board state, move logic, and solution evaluation.
-     */
+    /** @brief Owns the board state, enforces movement rules, and calculates game status. */
     class BoardModel {
     public:
         static constexpr int BoardSize = 7;
 
-        enum class Cell { Empty, Frog, Toad }; // Empty, Frog moves right, Toad moves left
+        /** Frogs move right; toads move left. */
+        enum class Cell { Empty, Frog, Toad };
 
         enum class GameState { Playing, Solved, Lost };
-
-        // --- Public API ---
 
         /** @brief Reset to the starting configuration. */
         void reset();
 
-        /** @brief Has the game been solved?  */
+        /** @brief Return whether the board matches the goal. */
         bool isSolved() const;
 
-        /** @brief Derived game state; unsolved boards report Playing until loss detection is implemented. */
+        /** @brief Returns game state. Unsolved boards report Playing until loss detection is implemented. */
         GameState state() const;
 
-        /** @brief Can the piece at zero-based index i move? Returns false for invalid indices and empty cells. */
-        bool canMove(int i) const;
+        /**
+         * @brief Test the piece at a zero-based index for a legal move without changing the board.
+         * @return True if movable; false for invalid, empty, or blocked cells.
+         */
+        bool canMove(int index) const;
+
+        /** @brief Return the cell at a zero-based index, or Cell::Empty if out of range. */
+        Cell cellAt(int index) const;
 
         /**
-         * @brief Cell at index i.
-         * @param i Zero-based index into the board.
-         * @return Cell value; returns Cell::Empty if i is out of range.
+         * @brief Attempt a slide or hop in the piece's movement direction.
+         * A slide enters an adjacent empty cell; a hop crosses one opposite-species
+         * piece and lands in an empty cell. Rejected moves leave the board unchanged.
+         * @param index Zero-based index of the piece to move.
+         * @return True if moved; false for an invalid index, empty cell, or blocked move.
          */
-        Cell cellAt(int i) const;
-
-        /**
-         * @brief Attempt to move the piece at index i.
-         *
-         * Applies a slide or jump if a space is available in the piece's
-         * direction. A jump requires an intervening piece of the opposite
-         * species. Updates internal state on success; leaves it unchanged
-         * for an invalid index, an empty cell, or a blocked move.
-         *
-         * @param i Zero-based index of the piece to move.
-         * @return True if a move was applied; otherwise false.
-         */
-        bool tryMove(int i);
+        bool tryMove(int index);
 
     private:
-        /** @brief Initial board layout. */
         static constexpr std::array<Cell, BoardSize> StartingBoard{ Cell::Frog, Cell::Frog, Cell::Frog, Cell::Empty, Cell::Toad, Cell::Toad, Cell::Toad };
         
-        /** @brief Goal board layout. */
         static constexpr std::array<Cell, BoardSize> GoalBoard{ Cell::Toad, Cell::Toad, Cell::Toad, Cell::Empty, Cell::Frog, Cell::Frog, Cell::Frog };
 
-        // Object State
-        
-        /** @brief The actual game board. */
         std::array<Cell, BoardSize> board{ StartingBoard };
 
-        // Static Constexpr Helpers
-        /**
-         * @brief Bounds check for board indices.
-         * @param i Index to test.
-         * @return @c true if @p i is within [0, BoardSize).
-         */
-        static constexpr bool isIndexValid(int i);
+        /** @brief Return whether index is in [0, BoardSize). */
+        static constexpr bool isIndexValid(int index);
 
-        /**
-         * @brief Direction of motion for a piece.
-         * @param c Occupied cell value (Frog or Toad).
-         * @return +1 (right) for Frog, -1 (left) for Toad.
-         */
-        static constexpr int moveDirection(Cell c);
+        /** @brief Return +1 for Frog or -1 for Toad; cell must be occupied. */
+        static constexpr int moveDirection(Cell cell);
 
-        // Instance Helpers
+        /** @brief Test for Cell::Empty; index must be valid. */
+        bool isCellEmpty(int index) const;
 
-        /**
-         * @brief Test if a cell is empty.
-         * @param i Index to test (assumed valid).
-         * @return True if the cell is Cell::Empty, else false.
-         */
-        bool isCellEmpty(int i) const;
-
-        /** @brief Legal destination for the piece at index i, or -1 if no move is possible. */
-        int moveDestination(int i) const;
+        /** @brief Return a legal destination for a zero-based cell, or -1 if no move is possible. */
+        int moveDestination(int index) const;
     };
 }

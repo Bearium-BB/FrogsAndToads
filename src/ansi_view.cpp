@@ -20,24 +20,24 @@ namespace FrogToad {
 
 	void AnsiView::drawBorder(const char* left, const char* separator, const char* right) {
 		std::cout << grey() << left;
-		for (int i{ 0 }; i < BoardModel::BoardSize; ++i) {
-			if (i > 0) std::cout << separator;
+		for (int index{ 0 }; index < BoardModel::BoardSize; ++index) {
+			if (index > 0) std::cout << separator;
 			std::cout << "═══";
 		}
 		std::cout << right << '\n';
 	}
 
-	void AnsiView::draw(const BoardModel& m) {
+	void AnsiView::draw(const BoardModel& model) {
 		std::cout << cursorHome() << resetStyles() << background();
 
 		std::cout << brown() << "Toads" << white() << " & " << green() << "Frogs" << eraseAfter() << "\n\n";
-		std::cout << grey() << "1.." << m.BoardSize << " = Move & R = Restart\n\n";
+		std::cout << grey() << "1.." << BoardModel::BoardSize << " = Move & R = Restart\n\n";
 
-		// Display the board row:
+		// Board row
 		drawBorder("╔", "╦", "╗");
-		for (int i{ 0 }; i < m.BoardSize; ++i) {
+		for (int index{ 0 }; index < BoardModel::BoardSize; ++index) {
 			std::cout << grey() << "║ ";
-			switch (m.cellAt(i)) {
+			switch (model.cellAt(index)) {
 				case BoardModel::Cell::Frog:
 					std::cout << green() << "►";
 					break;
@@ -56,22 +56,22 @@ namespace FrogToad {
 		std::cout << grey() << "║\n";
 		drawBorder("╚", "╩", "╝");
 
-		// Display the numeric index row: 
+		// Numbered positions
 		std::cout << grey();
-		for (int i = 1; i <= m.BoardSize; ++i) {
-			std::cout << "  " << i << ' ';
+		for (int position = 1; position <= BoardModel::BoardSize; ++position) {
+			std::cout << "  " << position << ' ';
 		}
 		std::cout << "\n\n";
 
 		// Status line
-		if (m.isSolved()) {
+		if (model.isSolved()) {
 			std::cout << blue() << "Solved! R to restart.\n";
 		}
 		else {
 			std::cout << white() << "Choose a piece to move.\n\n";
 		}
 
-		// If previous frame printed longer lines, clear the rest of the screen area
+		// Erase text left by a previous, longer frame.
 		std::cout << eraseAfter() << resetStyles() << std::flush;
 	}
- }
+}

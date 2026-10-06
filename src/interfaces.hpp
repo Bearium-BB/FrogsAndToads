@@ -2,42 +2,28 @@
 #include "board_model.hpp"
 
 namespace FrogToad {
-    /**
-     * @brief Abstract view interface for rendering our game.
-     *
-     * Views must implement a single draw operation that receives a read-only
-     * reference to the current model.
-     */
+    /** @brief Presents game state without changing the model. */
     class IView {
     public:
         virtual ~IView() = default;
 
         /**
-         * @brief Render the provided board state.
-         *
-         * Accepts a const reference to the current @c BoardModel. The
-         * parameter is intentionally unnamed; implementers should fetch all
-         * data needed to draw without mutating the model.
+         * @brief Render the current model.
+         * @param model Read-only reference of @c BoardModel to render.
          */
-        virtual void draw(const BoardModel&) = 0;
+        virtual void draw(const BoardModel& model) = 0;
     };
 
-    /**
-     * @brief Abstract controller interface for handling input.
-     *
-     * Controllers handle player or AI input and translate it into model
-     * requests. 
-     */
+    /** @brief Translates input into model requests; the model validates moves. */
     class IController {
     public:
         virtual ~IController() = default;
 
         /**
-         * @brief Handle input for the current model.
-         *
-         * Depending on the controller, a call may apply a move, reset the
-         * model, ignore input, or find no input. The model can reject a move.
+         * @brief Handle input; a call may apply a move or reset the model.
+         * No input, ignored input, and rejected moves leave the model unchanged.
+         * @param model Current game model; move requests can be rejected.
          */
-        virtual void handleInput(BoardModel&) = 0;
+        virtual void handleInput(BoardModel& model) = 0;
     };
 }

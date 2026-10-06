@@ -1,45 +1,40 @@
 #pragma once
 #include "interfaces.hpp"
-#include <string>
 
 namespace FrogToad {
-    /**
-     * @brief ANSI terminal implementation of FrogToad::IView.
-     *
-     * Renders the board using ANSI escape sequences on a text console.
-     */
+    /** @brief Presents a colored board using ANSI terminal escape sequences. */
     class AnsiView : public IView {
     public:
+        /** @brief Clear the terminal and hide its cursor; select UTF-8 output on Windows. */
+        AnsiView();
+        /** @brief Reset terminal styles and show the cursor. */
+        ~AnsiView();
 
-	    AnsiView();
-	    ~AnsiView();
-
-        /**
-        * @brief Draw the current board state to the terminal.
-        * @param m Read-only reference to the current model to render.
-        */
-	    void draw(const BoardModel& m) override;
+        /** @brief Redraw the board, numbered positions, and solved status in place. */
+        void draw(const BoardModel& model) override;
 
     private:
-
         /** @brief Draw a board border with one segment per cell. */
         static void drawBorder(const char* left, const char* separator, const char* right);
 
         // ANSI Escape Code Helpers
-        static const std::string resetStyles() { return "\x1b[0m"; } 
-        static const std::string clearScreen() { return "\x1b[2J"; };
-        static const std::string hideCursor()  { return "\x1b[?25l"; }
-        static const std::string showCursor()  { return "\x1b[?25h"; }
-        static const std::string eraseAfter()  { return "\x1b[0J"; }
-        static const std::string cursorHome()  { return "\x1b[H";  }
+        // Returning const char* avoids constructing a std::string on each call.
+        static const char* resetStyles() { return "\x1b[0m"; }
+        static const char* clearScreen() { return "\x1b[2J"; }
+        static const char* hideCursor()  { return "\x1b[?25l"; }
+        static const char* showCursor()  { return "\x1b[?25h"; }
+        static const char* eraseAfter()  { return "\x1b[0J"; }
+        static const char* cursorHome()  { return "\x1b[H"; }
+
         // Fixed 256-colour palette entries keep text readable on the black background.
-        static const std::string background()  { return "\x1b[48;5;16m"; }
-        static const std::string white()       { return "\x1b[38;5;255m"; }
-        static const std::string grey()        { return "\x1b[38;5;250m"; }
-        static const std::string brown()       { return "\x1b[38;5;180m"; }
-        static const std::string green()       { return "\x1b[38;5;82m"; }
-        static const std::string red()         { return "\x1b[38;5;196m"; }
-        static const std::string blue()        { return "\x1b[38;5;33m"; }
+        static const char* background() { return "\x1b[48;5;16m"; }
+        static const char* white()      { return "\x1b[38;5;255m"; }
+        static const char* grey()       { return "\x1b[38;5;250m"; }
+        static const char* brown()      { return "\x1b[38;5;180m"; }
+        static const char* green()      { return "\x1b[38;5;82m"; }
+        // Available for the student loss-display exercise.
+        static const char* red()        { return "\x1b[38;5;196m"; }
+        static const char* blue()       { return "\x1b[38;5;33m"; }
     };
 }
 

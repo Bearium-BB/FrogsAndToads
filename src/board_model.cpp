@@ -1,13 +1,11 @@
 #include "board_model.hpp"
 
 namespace FrogToad {
-    // --- Public API ---
-
     void BoardModel::reset() {
         board = StartingBoard;
     }
 
-    bool BoardModel::isSolved() const { 
+    bool BoardModel::isSolved() const {
         return board == GoalBoard;
     }
 
@@ -19,44 +17,40 @@ namespace FrogToad {
         return GameState::Playing;
     }
 
-    bool BoardModel::canMove(int i) const {
-        return moveDestination(i) != -1;
+    bool BoardModel::canMove(int index) const {
+        return moveDestination(index) != -1;
     }
 
-    BoardModel::Cell BoardModel::cellAt(int i) const {
-        return isIndexValid(i) ? board[i] : Cell::Empty;
+    BoardModel::Cell BoardModel::cellAt(int index) const {
+        return isIndexValid(index) ? board[index] : Cell::Empty;
     }
 
-    bool BoardModel::tryMove(int i) {
-        const int destination{ moveDestination(i) };
+    bool BoardModel::tryMove(int index) {
+        const int destination{ moveDestination(index) };
         if (destination == -1) return false;
 
-        board[destination] = board[i];
-        board[i] = Cell::Empty;
+        board[destination] = board[index];
+        board[index] = Cell::Empty;
         return true;
     }
 
-    // --- Private Static Constexpr Helpers ---
-
-    constexpr bool BoardModel::isIndexValid(int i) { 
-        return i >= 0 && i < BoardSize; 
-    }
-    
-    constexpr int BoardModel::moveDirection(Cell c) { 
-        return (c == Cell::Frog) ? +1 : -1; 
+    constexpr bool BoardModel::isIndexValid(int index) {
+        return index >= 0 && index < BoardSize;
     }
 
-    // --- Private Instance Helpers ---
-
-    bool BoardModel::isCellEmpty(int i) const { 
-        return board[i] == Cell::Empty;
+    constexpr int BoardModel::moveDirection(Cell cell) {
+        return (cell == Cell::Frog) ? +1 : -1;
     }
 
-    int BoardModel::moveDestination(int i) const {
-        if (!isIndexValid(i) || isCellEmpty(i)) return -1;
+    bool BoardModel::isCellEmpty(int index) const {
+        return board[index] == Cell::Empty;
+    }
 
-        const int direction{ moveDirection(board[i]) };
-        const int adjacentIndex{ i + direction };
+    int BoardModel::moveDestination(int index) const {
+        if (!isIndexValid(index) || isCellEmpty(index)) return -1;
+
+        const int direction{ moveDirection(board[index]) };
+        const int adjacentIndex{ index + direction };
 
         if (!isIndexValid(adjacentIndex)) return -1;
         if (isCellEmpty(adjacentIndex)) {
@@ -64,13 +58,13 @@ namespace FrogToad {
             return adjacentIndex;
         }
 
-        // Slide is not possible, so check for a jump. 
+        // Slide is not possible, so check for a hop. 
         // The adjacent cell must contain the opposite type of piece.
         if (board[adjacentIndex] == board[i]) return -1;
 
         const int jumpIndex{ adjacentIndex + direction };
         if (isIndexValid(jumpIndex) && isCellEmpty(jumpIndex)) {
-            // Jump over the adjacent piece into the empty cell.
+            // Hop over the adjacent piece into the empty cell.
             return jumpIndex;
         }
 

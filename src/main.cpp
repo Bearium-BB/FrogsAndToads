@@ -6,6 +6,7 @@
 #include "raylib.h"
 
 namespace FrogToad {
+    /** @brief Run the console game, drawing before each blocking input call. */
     int runConsole() {
         BoardModel model;
         AnsiView view;
@@ -19,6 +20,7 @@ namespace FrogToad {
         return 0;
     }
 
+    /** @brief Run the graphical game, handling input and drawing each frame. */
     int runRaylib() {
         BoardModel model;
         RaylibController controller;
