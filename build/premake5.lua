@@ -119,12 +119,8 @@ end
 downloadRaylib = true
 raylib_dir = "external/raylib-master"
 
-workspaceName = 'MyGame'
-baseName = path.getbasename(path.getdirectory(os.getcwd()));
-
---if (baseName ~= 'raylib-quickstart') then
-    workspaceName = baseName
---end
+-- Keep generated project names stable when the repository folder is renamed.
+workspaceName = 'FrogsAndToads'
 
 if (os.isdir('build_files') == false) then
     os.mkdir('build_files')

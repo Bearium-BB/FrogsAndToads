@@ -24,7 +24,7 @@ Use Visual Studio 2026 with the Desktop development with C++ workload, the v145 
 1. Fork this starter GitHub repository.
 2. Clone your forked repository to your computer.
 3. In File Explorer, open the repository folder and double-click `build-VisualStudio2026.bat`. An internet connection is required on the first run to download Raylib sources. The script generates the Visual Studio solution and project files; it does not compile the game.
-4. Open the generated `.slnx` solution in Visual Studio. Its name follows the repository folder name (`FrogsAndToads.slnx` when the folder is named `FrogsAndToads`).
+4. Open `FrogsAndToads.slnx` in Visual Studio. The solution name stays the same regardless of the repository folder name.
 5. Select **Debug | x64**, then build and run. The starter runs the console game by default.
 
 Raylib is downloaded into `build/external/raylib-master` and built from source as part of the solution. No Raylib NuGet installation is required. The download folder is ignored by Git, so each fresh clone needs the setup step.
