@@ -29,7 +29,7 @@ namespace FrogToad {
         SetTargetFPS(60);
 
         {   // Open a scope to control the lifetime of our RaylibView. 
-            // The view's textures must live entirely within the view's lifetime.
+            // The View's textures must live entirely within the Window's lifetime.
             RaylibView view;
 
             while (!WindowShouldClose()) {
@@ -48,5 +48,5 @@ namespace FrogToad {
 }
 
 int main() {
-    return FrogToad::runConsole(); // Change to runRaylib() for Parts 1–4.
+    return FrogToad::runConsole(); // Change to runRaylib() for Parts 1–3.
 }
