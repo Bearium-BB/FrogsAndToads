@@ -6,7 +6,7 @@
 #include "raylib.h"
 
 namespace FrogToad {
-    /** @brief Run the console game, drawing before each blocking input call. */
+    /** @brief Run the console game with the ANSI View, drawing before each blocking input call. */
     int runConsole() {
         BoardModel model;
         AnsiView view;
@@ -28,8 +28,8 @@ namespace FrogToad {
         InitWindow(RaylibView::windowW(), RaylibView::windowH(), "Toads & Frogs - Raylib");
         SetTargetFPS(60);
 
-        {
-            // The view's textures must live entirely within the window's lifetime.
+        {   // Open a scope to control the lifetime of our RaylibView. 
+            // The view's textures must live entirely within the view's lifetime.
             RaylibView view;
 
             while (!WindowShouldClose()) {
@@ -40,6 +40,7 @@ namespace FrogToad {
                 EndDrawing();
             }
         } // Destroy the view (and unload its textures) before closing the window.
+        // Clean and ready to close.
 
         CloseWindow();
         return 0;
