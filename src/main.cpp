@@ -4,6 +4,8 @@
 #include "raylib_controller.hpp"
 #include "raylib_view.hpp"
 #include "raylib.h"
+#include "..\mouseandkeyboard_controller.hpp"
+#include "..\mouseandkeyboard_view.hpp"
 
 namespace FrogToad {
     /** @brief Run the console game with the ANSI View, drawing before each blocking input call. */
@@ -23,14 +25,14 @@ namespace FrogToad {
     /** @brief Run the graphical game, handling input and drawing each frame. */
     int runRaylib() {
         BoardModel model;
-        RaylibController controller;
+        MouseAndKeyboardController controller;
 
-        InitWindow(RaylibView::windowW(), RaylibView::windowH(), "Toads & Frogs - Raylib");
+        InitWindow(MouseAndKeyboardView::windowW(), MouseAndKeyboardView::windowH(), "Toads & Frogs - Raylib");
         SetTargetFPS(60);
 
         {   // Open a scope to control the lifetime of our RaylibView. 
             // The View's textures must live entirely within the Window's lifetime.
-            RaylibView view;
+            MouseAndKeyboardView view;
 
             while (!WindowShouldClose()) {
                 controller.handleInput(model);

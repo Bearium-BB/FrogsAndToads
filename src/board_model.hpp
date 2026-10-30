@@ -7,6 +7,12 @@ namespace FrogToad {
     public:
         static constexpr int BoardSize = 7;
 
+        int mousePosX = 0;
+
+		int mousePosY = 0;
+
+        int hoveredCell = 0;
+
         /** Frogs move right; toads move left. */
         enum class Cell { Empty, Frog, Toad };
 
